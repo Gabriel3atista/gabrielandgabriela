@@ -5,23 +5,19 @@ import Script from 'next/script';
 import { NextIcon } from '@/components/NextIcon';
 import Link from 'next/link';
 
-const challenges: string[] = [
-  "Fotos em grupo da sua mesa",
-  "Fotos dos noivos se beijando",
-  "Selfie com os noivos",
-  "Uma careta",
-  "Selfie com os pais dos noivos",
-  "Os recém casados de mãos dadas",
-  "O que você mais gostou da celebração",
-  "Você curtindo a celebração",
-]
-
+declare global {
+  interface Window {
+    Tally?: {
+      loadEmbeds: () => void;
+    }
+  }
+}
 export default function Home() {
   useEffect(() => {
     // This will run after the component mounts and the script is loaded
     // It ensures iframes are properly initialized
-    if (window.Tally) {
-      window.Tally.loadEmbeds();
+    if (typeof window !== 'undefined' && 'Tally' in window) {
+      (window as any).Tally.loadEmbeds();
     }
   }, []);
 
